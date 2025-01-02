@@ -107,20 +107,28 @@ class TeneoAutoref:
         keyword = random.choice(consonants) + random.choice(vowels)
         
         headers = {'User-Agent': self.ua.random}
-        response = self.make_request('GET', f'https://generator.email/search.php?key={keyword}', headers=headers, timeout=60)
+        urls = [
+            f'https://generator.email/search.php?key={keyword}',
+            f'https://email-fake.com/search.php?key={keyword}',
+            f'https://emailfake.com/search.php?key={keyword}'
+        ]
         
-        if not response:
-            return None
+        for url in urls:
+            response = self.make_request('GET', url, headers=headers, timeout=60)
             
-        domains = response.json()
-        valid_domains = [d for d in domains if all(ord(c) < 128 for c in d)]
+            if response:
+                try:
+                    domains = response.json()
+                    valid_domains = [d for d in domains if all(ord(c) < 128 for c in d)]
+                    
+                    if valid_domains:
+                        selected_domain = random.choice(valid_domains)
+                        log_message(self.current_num, self.total, f"Selected domain: {selected_domain}", "success")
+                        return selected_domain
+                except Exception as e:
+                    log_message(self.current_num, self.total, f"Error parsing response from {url}: {e}", "error")
         
-        if valid_domains:
-            selected_domain = random.choice(valid_domains)
-            log_message(self.current_num, self.total, f"Selected domain: {selected_domain}", "success")
-            return selected_domain
-            
-        log_message(self.current_num, self.total, "Could not find valid domain", "error")
+        log_message(self.current_num, self.total, "Could not find valid domain from any source", "error")
         return None
 
     def generate_email(self, domain):
