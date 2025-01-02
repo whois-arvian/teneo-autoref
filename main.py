@@ -107,28 +107,20 @@ class TeneoAutoref:
         keyword = random.choice(consonants) + random.choice(vowels)
         
         headers = {'User-Agent': self.ua.random}
-        urls = [
-            f'https://generator.email/search.php?key={keyword}',
-            f'https://email-fake.com/search.php?key={keyword}',
-            f'https://emailfake.com/search.php?key={keyword}'
-        ]
+        response = self.make_request('GET', f'https://email-fake.com/search.php?key={keyword}', headers=headers, timeout=60)
         
-        for url in urls:
-            response = self.make_request('GET', url, headers=headers, timeout=60)
+        if not response:
+            return None
             
-            if response:
-                try:
-                    domains = response.json()
-                    valid_domains = [d for d in domains if all(ord(c) < 128 for c in d)]
-                    
-                    if valid_domains:
-                        selected_domain = random.choice(valid_domains)
-                        log_message(self.current_num, self.total, f"Selected domain: {selected_domain}", "success")
-                        return selected_domain
-                except Exception as e:
-                    log_message(self.current_num, self.total, f"Error parsing response from {url}: {e}", "error")
+        domains = response.json()
+        valid_domains = [d for d in domains if all(ord(c) < 128 for c in d)]
         
-        log_message(self.current_num, self.total, "Could not find valid domain from any source", "error")
+        if valid_domains:
+            selected_domain = random.choice(valid_domains)
+            log_message(self.current_num, self.total, f"Selected domain: {selected_domain}", "success")
+            return selected_domain
+            
+        log_message(self.current_num, self.total, "Could not find valid domain", "error")
         return None
 
     def generate_email(self, domain):
@@ -236,7 +228,7 @@ class TeneoAutoref:
         max_attempts = 5
         for attempt in range(max_attempts):
             log_message(self.current_num, self.total, f"Attempting to get verification link...", "process")
-            response = self.make_request('GET', 'https://generator.email/inbox1/', headers=headers, cookies=cookies, timeout=60)
+            response = self.make_request('GET', 'https://email-fake.com/inbox1/', headers=headers, cookies=cookies, timeout=60)
             
             if not response:
                 continue
