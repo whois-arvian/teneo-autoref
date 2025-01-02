@@ -228,7 +228,7 @@ class TeneoAutoref:
         max_attempts = 5
         for attempt in range(max_attempts):
             log_message(self.current_num, self.total, f"Attempting to get verification link...", "process")
-            response = self.make_request('GET', 'https://email-fake.com/inbox1/', headers=headers, cookies=cookies, timeout=60)
+            response = self.make_request('GET', 'https://email-fake.com/', headers=headers, cookies=cookies, timeout=60)
             
             if not response:
                 continue
