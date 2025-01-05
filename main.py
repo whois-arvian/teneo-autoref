@@ -479,6 +479,10 @@ def main():
                     f.write(f"Points: 51000\n")
                     f.write("-" * 85 + "\n")
                     f.flush()
+                with open("accountsLogin.txt", "a") as f:
+                    f.write(f"{account['email']}")
+                    f.write(f",{account['password']}")
+                    f.flush()
                 successful += 1
                 log_message(i+1, count, "Account created successfully!", "debug")
                 log_message(i+1, count, f"Email: {account['email']}", "success")
