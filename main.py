@@ -351,8 +351,6 @@ class TeneoAutoref:
                         'Upgrade': 'websocket', 
                         'Connection': 'upgrade',
                         'Origin': 'chrome-extension://emcclcoaglgcpoognfiggmhnhgabppkm',
-                        'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits',
-                        'Sec-Websocket-Version': '13',
                         'User-Agent': self.ua.random
                     },
                     proxy=self.proxy if self.proxy else None,
