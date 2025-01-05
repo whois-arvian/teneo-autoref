@@ -351,6 +351,8 @@ class TeneoAutoref:
                         'Upgrade': 'websocket', 
                         'Connection': 'upgrade',
                         'Origin': 'chrome-extension://emcclcoaglgcpoognfiggmhnhgabppkm',
+                        'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits',
+                        'Sec-Websocket-Version': '13',
                         'User-Agent': self.ua.random
                     },
                     proxy=self.proxy if self.proxy else None,
@@ -382,7 +384,7 @@ class TeneoAutoref:
         headers = {
             'Accept': 'application/json, text/plain, */*',
             'Authorization': f'Bearer {access_token}',
-            # 'Connection': 'keep-alive',
+            'Connection': 'keep-alive',
             'Origin': 'https://dashboard.teneo.pro',
             'Referer': 'https://dashboard.teneo.pro/',
             'User-Agent': self.ua.random
