@@ -382,7 +382,7 @@ class TeneoAutoref:
         headers = {
             'Accept': 'application/json, text/plain, */*',
             'Authorization': f'Bearer {access_token}',
-            'Connection': 'keep-alive',
+            # 'Connection': 'keep-alive',
             'Origin': 'https://dashboard.teneo.pro',
             'Referer': 'https://dashboard.teneo.pro/',
             'User-Agent': self.ua.random
