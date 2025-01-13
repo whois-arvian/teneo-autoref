@@ -481,7 +481,7 @@ def main():
                     f.flush()
                 with open("accountsLogin.txt", "a") as f:
                     f.write(f"{account['email']}")
-                    f.write(f",{account['password']}")
+                    f.write(f",{account['password']}\n")
                     f.flush()
                 successful += 1
                 log_message(i+1, count, "Account created successfully!", "debug")
